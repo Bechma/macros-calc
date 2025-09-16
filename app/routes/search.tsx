@@ -2,25 +2,18 @@ import React from "react";
 import type { MetaFunction } from "react-router";
 import FoodCard from "../components/FoodCard";
 import useOpenNutritionSearch from "../data_sources/opennutrition";
+import useDebounce from "../utils/useDebounce";
 
 export const meta: MetaFunction = () => {
 	return [{ title: "Macros calculator" }];
 };
 
-export default function Home() {
+export default function Search() {
 	const [search, setSearch] = React.useState("");
 	const searchTrim = search.trim();
+	const debouncedSearch = useDebounce(searchTrim, 200);
 	const { data, error, isError, isLoading, isFetching } =
-		useOpenNutritionSearch(searchTrim);
-
-	// Debounce the search to avoid too many API calls
-	React.useEffect(() => {
-		// Clear any previous errors when search term changes
-		if (searchTrim) {
-			// The query will automatically refetch when searchTrim changes
-			// due to the queryKey dependency in useOpenNutritionSearch
-		}
-	}, [searchTrim]);
+		useOpenNutritionSearch(debouncedSearch);
 
 	const renderContent = () => {
 		if (isError) {
