@@ -1,109 +1,86 @@
-import React from "react";
+import { useState } from "react";
 import type { MetaFunction } from "react-router";
-import FoodCard from "../components/FoodCard";
-import useOpenNutritionSearch from "../data_sources/opennutrition";
+import FoodList from "~/components/FoodList";
+import NutritionSummary from "~/components/NutritionSummary";
+import SearchModal from "~/components/SearchModal";
+import type { Food } from "~/data_sources/common";
 
 export const meta: MetaFunction = () => {
-	return [{ title: "Macros calculator" }];
+	return [{ title: "Macros Calculator" }];
+};
+
+type SelectedFood = {
+	id: string;
+	food: Food;
+	quantity: number;
 };
 
 export default function Home() {
-	const [search, setSearch] = React.useState("");
-	const searchTrim = search.trim();
-	const { data, error, isError, isLoading, isFetching } =
-		useOpenNutritionSearch(searchTrim);
+	const [selectedFoods, setSelectedFoods] = useState<SelectedFood[]>([]);
+	const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
-	// Debounce the search to avoid too many API calls
-	React.useEffect(() => {
-		// Clear any previous errors when search term changes
-		if (searchTrim) {
-			// The query will automatically refetch when searchTrim changes
-			// due to the queryKey dependency in useOpenNutritionSearch
-		}
-	}, [searchTrim]);
+	const handleAddFood = (food: Food) => {
+		setSelectedFoods((prev) => [
+			...prev,
+			{
+				id: `${food.id}-${Date.now()}`,
+				food,
+				quantity: 100, // Default to 100g
+			},
+		]);
+	};
 
-	const renderContent = () => {
-		if (isError) {
-			return (
-				<div className="notification is-danger">
-					<button
-						type="button"
-						className="delete"
-						onClick={() => window.location.reload()}
-					></button>
-					<p>Error loading food data. Please try again.</p>
-					{error instanceof Error && (
-						<p className="is-size-7 mt-2">Error: {error.message}</p>
-					)}
-				</div>
-			);
-		}
+	const handleRemoveFood = (id: string) => {
+		setSelectedFoods((prev) => prev.filter((item) => item.id !== id));
+	};
 
-		if (isLoading || isFetching) {
-			return (
-				<div className="has-text-centered py-6">
-					<button type="button" className="button is-loading is-large is-white">
-						Loading...
-					</button>
-				</div>
-			);
-		}
-
-		if (data?.length) {
-			return data.map((food) => <FoodCard key={food.id} food={food} />);
-		}
-
-		if (searchTrim) {
-			return (
-				<div className="has-text-centered py-6">
-					<p className="subtitle">No results found for "{searchTrim}"</p>
-				</div>
-			);
-		}
-
-		return (
-			<div className="has-text-centered py-6">
-				<p className="subtitle">
-					Search for food to see nutritional information
-				</p>
-			</div>
+	const handleQuantityChange = (id: string, quantity: number) => {
+		setSelectedFoods((prev) =>
+			prev.map((item) =>
+				item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item,
+			),
 		);
 	};
 
 	return (
-		<div className="container p-5">
-			<h1 className="title is-1 has-text-centered mb-6">Nutrition Search</h1>
+		<div className="py-6">
+			<div className="columns is-centered">
+				<div className="column is-8">
+					<div className="is-flex is-justify-content-space-between is-align-items-center mb-5">
+						<h1 className="title">Macros Calculator</h1>
+						<button
+							type="button"
+							className="button is-primary"
+							onClick={() => setIsSearchModalOpen(true)}
+						>
+							<i className="fas fa-plus mr-2"></i>
+							Add Food
+						</button>
+					</div>
 
-			<div className="field">
-				<div className="control has-icons-left has-icons-right">
-					<input
-						className={`input is-large ${isError ? "is-danger" : ""}`}
-						type="text"
-						placeholder="Search for food..."
-						value={search}
-						onChange={(e) => setSearch(e.target.value)}
-						aria-busy={isLoading}
-						aria-invalid={isError}
-					/>
-					<span className="icon is-left">
-						<i
-							className={`fas ${isError ? "fa-exclamation-triangle" : "fa-search"}`}
-						></i>
-					</span>
-					{(isLoading || isFetching) && (
-						<span className="icon is-right">
-							<i className="fas fa-spinner fa-spin"></i>
-						</span>
-					)}
+					<div className="mb-5">
+						<NutritionSummary foods={selectedFoods} />
+					</div>
+
+					<div className="box">
+						<h2 className="title is-4 mb-4">
+							<i className="fas fa-list mr-2"></i>
+							Selected Foods
+						</h2>
+						<FoodList
+							foods={selectedFoods}
+							onQuantityChange={handleQuantityChange}
+							onRemove={handleRemoveFood}
+						/>
+					</div>
 				</div>
-				{isError && (
-					<p className="help is-danger">
-						There was an error with your search. Please try again.
-					</p>
-				)}
 			</div>
 
-			<div className="mt-5">{renderContent()}</div>
+			<SearchModal
+				isOpen={isSearchModalOpen}
+				onClose={() => setIsSearchModalOpen(false)}
+				onAddFood={handleAddFood}
+			/>
 		</div>
 	);
 }

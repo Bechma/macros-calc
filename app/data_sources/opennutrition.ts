@@ -1,33 +1,32 @@
-import { useQuery } from "@tanstack/react-query";
 import {
 	defaultOptions,
 	type Food as FoodCommon,
 	type Nutrition,
-	queryKeys,
+	pageSize,
 } from "./common";
 
-export default function useOpenNutritionSearch(query: string) {
-	return useQuery({
-		...defaultOptions,
-		queryKey: queryKeys.searchOpenNutrition(query),
-		queryFn: async () => {
-			if (!query) return null;
-			const response = await fetch(
-				`https://search.opennutrition.app/foods?q=${encodeURIComponent(query)}&limit=20&offset=0&facets=true`,
-			);
-			if (!response.ok) {
-				throw new Error("Failed to fetch food data");
-			}
-			return response.json();
-		},
-		select: (data: Root | null): FoodCommon[] =>
-			data?.foods?.map((food) => ({
-				...food,
-				image: food.image.key,
-			})) || [],
-		enabled: !!query, // Only run the query if there's a query string
-	});
-}
+export const queryParamsOpenNutrition = (query: string) => ({
+	...defaultOptions,
+	queryKey: ["search", "opennutrition", query],
+	queryFn: async () => {
+		if (!query) return null;
+		const response = await fetch(
+			`https://search.opennutrition.app/foods?q=${encodeURIComponent(query)}&limit=${pageSize}&offset=0&facets=true`,
+		);
+		if (!response.ok) {
+			throw new Error("Failed to fetch food data");
+		}
+		return response.json();
+	},
+	select: (data: Root | null): FoodCommon[] =>
+		data?.foods?.map((food) => ({
+			...food,
+			image: food.image.key
+				? `https://drd3kry2ubqnc.cloudfront.net/${food.image.key}@4x.webp`
+				: undefined,
+		})) || [],
+	enabled: !!query, // Only run the query if there's a query string
+});
 
 export interface Root {
 	status: string;

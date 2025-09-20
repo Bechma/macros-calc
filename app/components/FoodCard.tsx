@@ -2,9 +2,10 @@ import type { Food as FoodCommon } from "../data_sources/common";
 
 interface FoodCardProps {
 	food: FoodCommon;
+	onAdd?: (food: FoodCommon) => void;
 }
 
-export default function FoodCard({ food }: FoodCardProps) {
+export default function FoodCard({ food, onAdd }: FoodCardProps) {
 	const { name, image, nutrition } = food;
 	const { protein = 0, carbohydrates = 0, total_fat: totalFat = 0 } = nutrition;
 	const calories =
@@ -16,27 +17,29 @@ export default function FoodCard({ food }: FoodCardProps) {
 				<div className="media">
 					{image && (
 						<div className="media-left">
-							<figure className="image is-96x96">
-								<img
-									src={`https://drd3kry2ubqnc.cloudfront.net/${image}@4x.webp`}
-									alt={name}
-									className="is-rounded"
-									style={{
-										width: "96px",
-										height: "96px",
-										objectFit: "cover",
-										borderRadius: "4px",
-									}}
-								/>
+							<figure className="image is-64x64">
+								<img src={image} alt={name} />
 							</figure>
 						</div>
 					)}
 					<div className="media-content">
-						<div className="is-flex is-align-items-baseline mb-2">
-							<h2 className="title is-4 mr-2">{name}</h2>
-							<span className="subtitle is-6 has-text-grey mr-2">
-								{calories} kcal per serving
-							</span>
+						<div className="is-flex is-align-items-baseline is-justify-content-space-between mb-2">
+							<div>
+								<h2 className="title is-4 mr-2">{name}</h2>
+								<span className="subtitle is-6 has-text-grey mr-2">
+									{calories} kcal per serving
+								</span>
+							</div>
+							{onAdd && (
+								<button
+									type="button"
+									className="button is-primary is-small"
+									onClick={() => onAdd(food)}
+								>
+									<i className="fas fa-plus mr-1"></i>
+									Add
+								</button>
+							)}
 						</div>
 						<div className="content mt-5">
 							<div className="columns is-mobile has-text-centered">

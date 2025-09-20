@@ -1,36 +1,33 @@
-import { useQuery } from "@tanstack/react-query";
 import {
 	defaultOptions,
 	type Food as FoodCommon,
 	type Nutrition,
-	queryKeys,
+	pageSize,
 } from "./common";
 
 // docs: https://wiki.openfoodfacts.org/API/Read/Search
-export default function useOpenNutritionSearch(query: string) {
-	return useQuery({
-		...defaultOptions,
-		queryKey: queryKeys.searchOpenFoodFacts(query),
-		queryFn: async () => {
-			if (!query) return null;
-			const response = await fetch(
-				`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1`,
-			);
-			if (!response.ok) {
-				throw new Error("Failed to fetch food data");
-			}
-			return response.json();
-		},
-		select: (data: Root | null): FoodCommon[] =>
-			data?.products?.map((product) => ({
-				id: product._id,
-				name: product.abbreviated_product_name,
-				image: product.image_url,
-				nutrition: mapToNutrition(product),
-			})) || [],
-		enabled: !!query, // Only run the query if there's a query string
-	});
-}
+export const queryParamsOpenFoodFacts = (query: string) => ({
+	...defaultOptions,
+	queryKey: ["search", "openfoodfacts", query],
+	queryFn: async () => {
+		if (!query) return null;
+		const response = await fetch(
+			`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&page_size=${pageSize}&page=1&search_simple=1&action=process&json=1`,
+		);
+		if (!response.ok) {
+			throw new Error("Failed to fetch food data");
+		}
+		return response.json();
+	},
+	select: (data: Root | null): FoodCommon[] =>
+		data?.products?.map((product) => ({
+			id: product._id,
+			name: product.abbreviated_product_name || product.product_name,
+			image: product.image_url,
+			nutrition: mapToNutrition(product),
+		})) || [],
+	enabled: !!query, // Only run the query if there's a query string
+});
 
 interface Root {
 	count: number;
@@ -47,6 +44,7 @@ interface Nutriments {
 
 interface NutritionSourceData {
 	_id: string;
+	product_name: string;
 	abbreviated_product_name: string;
 	image_url: string;
 	nutriments: Nutriments;

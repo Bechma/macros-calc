@@ -1,20 +1,15 @@
-export const queryKeys = {
-	searchOpenNutrition: (query: string) =>
-		["search", "opennutrition", query] as const,
-	searchOpenFoodFacts: (query: string) =>
-		["search", "openfoodfacts", query] as const,
-};
-
 export const defaultOptions = {
 	staleTime: 60 * 60 * 1000, // 60 minutes
 	retry: 2,
 	retryDelay: 1000,
 };
 
+export const pageSize = 20;
+
 export interface Food {
 	id: string;
 	name: string;
-	image: string;
+	image?: string;
 	nutrition: Nutrition;
 }
 
