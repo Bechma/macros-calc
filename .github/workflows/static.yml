@@ -41,6 +41,8 @@ jobs:
         run: bun install
         
       - name: Build project
+        env:
+          VITE_BASE_URL: /${{ github.event.repository.name }}/
         run: bun run build
         
       - name: Setup Pages

@@ -4,6 +4,5 @@ export default {
 	// Config options...
 	// Server-side render by default, to enable SPA mode set this to `false`
 	ssr: false,
-	prerender: true,
-	basename: "/macros-calc/", // github pages
+	basename: process.env.VITE_BASE_URL || "/",
 } satisfies Config;

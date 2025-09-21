@@ -4,21 +4,20 @@
     "": {
       "name": "macros",
       "dependencies": {
-        "@react-router/node": "^7.7.1",
-        "@react-router/serve": "^7.7.1",
-        "@tanstack/react-query": "^5.87.4",
+        "@react-router/node": "^7.9.1",
+        "@tanstack/react-query": "^5.89.0",
         "isbot": "^5",
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
-        "react-router": "^7.7.1",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1",
+        "react-router": "^7.9.1",
       },
       "devDependencies": {
         "@biomejs/biome": "2.2.4",
-        "@react-router/dev": "^7.7.1",
+        "@react-router/dev": "^7.9.1",
         "@types/node": "^24",
-        "@types/react": "^19.1.2",
-        "@types/react-dom": "^19.1.2",
-        "typescript": "^5.8.3",
+        "@types/react": "^19.1.13",
+        "@types/react-dom": "^19.1.9",
+        "typescript": "^5.9.2",
         "vite": "^7.1.5",
         "vite-tsconfig-paths": "^5.1.4",
       },
@@ -223,9 +222,9 @@
 
     "@rollup/rollup-win32-x64-msvc": ["@rollup/rollup-win32-x64-msvc@4.50.1", "", { "os": "win32", "cpu": "x64" }, "sha512-StxAO/8ts62KZVRAm4JZYq9+NqNsV7RvimNK+YM7ry//zebEH6meuugqW/P5OFUCjyQgui+9fUxT6d5NShvMvA=="],
 
-    "@tanstack/query-core": ["@tanstack/query-core@5.87.4", "", {}, "sha512-uNsg6zMxraEPDVO2Bn+F3/ctHi+Zsk+MMpcN8h6P7ozqD088F6mFY5TfGM7zuyIrL7HKpDyu6QHfLWiDxh3cuw=="],
+    "@tanstack/query-core": ["@tanstack/query-core@5.89.0", "", {}, "sha512-joFV1MuPhSLsKfTzwjmPDrp8ENfZ9N23ymFu07nLfn3JCkSHy0CFgsyhHTJOmWaumC/WiNIKM0EJyduCF/Ih/Q=="],
 
-    "@tanstack/react-query": ["@tanstack/react-query@5.87.4", "", { "dependencies": { "@tanstack/query-core": "5.87.4" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-T5GT/1ZaNsUXf5I3RhcYuT17I4CPlbZgyLxc/ZGv7ciS6esytlbjb3DgUFO6c8JWYMDpdjSWInyGZUErgzqhcA=="],
+    "@tanstack/react-query": ["@tanstack/react-query@5.89.0", "", { "dependencies": { "@tanstack/query-core": "5.89.0" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-SXbtWSTSRXyBOe80mszPxpEbaN4XPRUp/i0EfQK1uyj3KCk/c8FuPJNIRwzOVe/OU3rzxrYtiNabsAmk1l714A=="],
 
     "@types/estree": ["@types/estree@1.0.8", "", {}, "sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w=="],
 
