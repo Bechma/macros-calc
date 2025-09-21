@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { MetaFunction } from "react-router";
 import FoodList from "~/components/FoodList";
 import NutritionSummary from "~/components/NutritionSummary";
@@ -6,7 +6,9 @@ import SearchModal from "~/components/SearchModal";
 import type { Food } from "~/data_sources/common";
 
 export const meta: MetaFunction = () => {
-	return [{ title: "Macros Calculator" }];
+	return [
+		{ title: "Macros Calculator", description: "Calculate your macros easily" },
+	];
 };
 
 type SelectedFood = {
@@ -16,8 +18,15 @@ type SelectedFood = {
 };
 
 export default function Home() {
-	const [selectedFoods, setSelectedFoods] = useState<SelectedFood[]>([]);
+	const [selectedFoods, setSelectedFoods] = useState<SelectedFood[]>(() => {
+		const hash = window.location.hash;
+		return hash ? JSON.parse(atob(hash.slice(1))) : [];
+	});
 	const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+
+	useEffect(() => {
+		window.location.hash = btoa(JSON.stringify(selectedFoods));
+	}, [selectedFoods]);
 
 	const handleAddFood = (food: Food) => {
 		setSelectedFoods((prev) => [
