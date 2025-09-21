@@ -43,14 +43,14 @@ export default function Home() {
 	};
 
 	return (
-		<div className="py-6">
+		<main className="py-6">
 			<div className="columns is-centered">
 				<div className="column is-8">
 					<div className="is-flex is-justify-content-space-between is-align-items-center mb-5">
 						<h1 className="title">Macros Calculator</h1>
 						<button
 							type="button"
-							className="button is-primary"
+							className="button is-primary mb-0"
 							onClick={() => setIsSearchModalOpen(true)}
 						>
 							<i className="fas fa-plus mr-2"></i>
@@ -81,6 +81,6 @@ export default function Home() {
 				onClose={() => setIsSearchModalOpen(false)}
 				onAddFood={handleAddFood}
 			/>
-		</div>
+		</main>
 	);
 }

@@ -24,20 +24,20 @@ export default function FoodList({
 	}
 
 	return (
-		<div className="content">
+		<div>
 			{foods.map(({ food, quantity, id }) => (
 				<div key={id} className="box">
 					<div className="is-flex is-justify-content-space-between is-align-items-center">
 						<div className="is-flex is-align-items-center">
 							{food.image && (
-								<figure className="image is-square is-32x32">
+								<figure className="image is-square is-32x32 mr-2">
 									<img src={food.image} alt={food.name} />
 								</figure>
 							)}
 							<p className="title is-5">{food.name}</p>
 						</div>
 						<div className="is-flex is-align-items-center">
-							<div className="field has-addons">
+							<div className="field has-addons mb-0">
 								<div className="control is-expanded has-icons-right">
 									<input
 										id={id}
