@@ -34,6 +34,11 @@ export const links: Route.LinksFunction = () => [
 			"sha512-yh2RE0wZCVZeysGiqTwDTO/dKelCbS9bP2L94UvOFtl/FKXcNAje3Y2oBg/ZMZ3LS1sicYk4dYVGtDex75fvvA==",
 		crossOrigin: "anonymous",
 	},
+	{
+		rel: "icon",
+		href: "./favicon.svg",
+		type: "image/svg+xml",
+	},
 ];
 
 const queryClient = new QueryClient();
@@ -46,7 +51,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<Meta />
 				<Links />
-				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 			</head>
 			<body>
 				<QueryClientProvider client={queryClient}>
