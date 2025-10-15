@@ -1,21 +1,11 @@
-interface NutritionSummaryProps {
-	foods: Array<{
-		food: {
-			nutrition: {
-				calories?: number;
-				protein?: number;
-				carbohydrates?: number;
-				total_fat?: number;
-			};
-		};
-		quantity: number;
-	}>;
-}
+import { useAtomValue } from "jotai";
+import { readFood } from "~/stores/foodStore";
 
-export default function NutritionSummary({ foods }: NutritionSummaryProps) {
+export default function NutritionSummary() {
+	const foods = useAtomValue(readFood);
 	const totals = foods.reduce(
 		(acc, { food, quantity }) => {
-			const factor = quantity / 100;
+			const factor = quantity ? quantity / 100 : 0;
 			return {
 				calories: acc.calories + (food.nutrition.calories || 0) * factor,
 				protein: acc.protein + (food.nutrition.protein || 0) * factor,

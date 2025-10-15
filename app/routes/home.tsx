@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { MetaFunction } from "react-router";
 import FoodList from "~/components/FoodList";
 import NutritionSummary from "~/components/NutritionSummary";
 import SearchModal from "~/components/SearchModal";
-import type { Food } from "~/data_sources/common";
 
 export const meta: MetaFunction = () => {
 	return [
@@ -11,45 +10,8 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-type SelectedFood = {
-	id: string;
-	food: Food;
-	quantity: number;
-};
-
 export default function Home() {
-	const [selectedFoods, setSelectedFoods] = useState<SelectedFood[]>(() => {
-		const hash = window.location.hash;
-		return hash ? JSON.parse(atob(hash.slice(1))) : [];
-	});
 	const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-
-	useEffect(() => {
-		window.location.hash = btoa(JSON.stringify(selectedFoods));
-	}, [selectedFoods]);
-
-	const handleAddFood = (food: Food) => {
-		setSelectedFoods((prev) => [
-			...prev,
-			{
-				id: `${food.id}-${Date.now()}`,
-				food,
-				quantity: 100, // Default to 100g
-			},
-		]);
-	};
-
-	const handleRemoveFood = (id: string) => {
-		setSelectedFoods((prev) => prev.filter((item) => item.id !== id));
-	};
-
-	const handleQuantityChange = (id: string, quantity: number) => {
-		setSelectedFoods((prev) =>
-			prev.map((item) =>
-				item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item,
-			),
-		);
-	};
 
 	return (
 		<main className="py-6">
@@ -68,7 +30,7 @@ export default function Home() {
 					</div>
 
 					<div className="mb-5">
-						<NutritionSummary foods={selectedFoods} />
+						<NutritionSummary />
 					</div>
 
 					<div className="box">
@@ -76,11 +38,7 @@ export default function Home() {
 							<i className="fas fa-list mr-2"></i>
 							Selected Foods
 						</h2>
-						<FoodList
-							foods={selectedFoods}
-							onQuantityChange={handleQuantityChange}
-							onRemove={handleRemoveFood}
-						/>
+						<FoodList />
 					</div>
 				</div>
 			</div>
@@ -88,7 +46,6 @@ export default function Home() {
 			<SearchModal
 				isOpen={isSearchModalOpen}
 				onClose={() => setIsSearchModalOpen(false)}
-				onAddFood={handleAddFood}
 			/>
 		</main>
 	);

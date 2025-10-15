@@ -1,20 +1,18 @@
+import { useSetAtom } from "jotai";
 import React from "react";
 import useSearch from "../data_sources";
 import type { Food } from "../data_sources/common";
 import useDebounce from "../hooks/useDebounce";
+import { addFood } from "../stores/foodStore";
 import FoodCard from "./FoodCard";
 
 interface SearchModalProps {
 	isOpen: boolean;
 	onClose: () => void;
-	onAddFood: (food: Food) => void;
 }
 
-export default function SearchModal({
-	isOpen,
-	onClose,
-	onAddFood,
-}: SearchModalProps) {
+export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
+	const onAddFood = useSetAtom(addFood);
 	const [search, setSearch] = React.useState("");
 	const searchTrim = search.trim();
 	const debouncedSearch = useDebounce(searchTrim, 300);

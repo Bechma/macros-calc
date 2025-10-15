@@ -88,3 +88,14 @@ export interface Nutrition {
 	water?: number;
 	zinc?: number;
 }
+
+export type NutritionSummary = {
+	protein: number;
+	carbohydrates: number;
+	total_fat: number;
+	calories: number;
+};
+
+export type FoodSummary = Pick<Food, "id" | "name" | "image"> & {
+	nutrition: NutritionSummary;
+};
