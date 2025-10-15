@@ -36,7 +36,7 @@ export default function FoodList() {
 											id={id}
 											className="input is-rounded"
 											type="number"
-											value={quantity ?? ""}
+											value={quantity ? quantity.toString() : ""}
 											onChange={(e) => {
 												let value = e.target.valueAsNumber;
 												if (!value || Number.isNaN(value) || value < 0) {
@@ -67,25 +67,25 @@ export default function FoodList() {
 							<div className="column">
 								<div className="has-text-grey is-size-8">Calories</div>
 								<div className="has-text-weight-bold">
-									{Math.round((food.nutrition.calories || 0) * factor)}
+									{Math.round(food.nutrition.calories * factor)}
 								</div>
 							</div>
 							<div className="column">
 								<div className="has-text-grey is-size-8">Protein</div>
 								<div className="has-text-weight-bold">
-									{((food.nutrition.protein || 0) * factor).toFixed(1)}g
+									{(food.nutrition.protein * factor).toFixed(1)}g
 								</div>
 							</div>
 							<div className="column">
 								<div className="has-text-grey is-size-8">Carbs</div>
 								<div className="has-text-weight-bold">
-									{((food.nutrition.carbohydrates || 0) * factor).toFixed(1)}g
+									{(food.nutrition.carbohydrates * factor).toFixed(1)}g
 								</div>
 							</div>
 							<div className="column">
 								<div className="has-text-grey is-size-8">Fat</div>
 								<div className="has-text-weight-bold">
-									{((food.nutrition.total_fat || 0) * factor).toFixed(1)}g
+									{(food.nutrition.total_fat * factor).toFixed(1)}g
 								</div>
 							</div>
 						</div>

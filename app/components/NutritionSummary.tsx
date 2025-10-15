@@ -7,11 +7,11 @@ export default function NutritionSummary() {
 		(acc, { food, quantity }) => {
 			const factor = quantity ? quantity / 100 : 0;
 			return {
-				calories: acc.calories + (food.nutrition.calories || 0) * factor,
-				protein: acc.protein + (food.nutrition.protein || 0) * factor,
+				calories: acc.calories + food.nutrition.calories * factor,
+				protein: acc.protein + food.nutrition.protein * factor,
 				carbohydrates:
-					acc.carbohydrates + (food.nutrition.carbohydrates || 0) * factor,
-				fat: acc.fat + (food.nutrition.total_fat || 0) * factor,
+					acc.carbohydrates + food.nutrition.carbohydrates * factor,
+				fat: acc.fat + food.nutrition.total_fat * factor,
 			};
 		},
 		{ calories: 0, protein: 0, carbohydrates: 0, fat: 0 },
